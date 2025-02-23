@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ToDoApp.Application.Dtos;
+using ToDoApp.Application.Services;
 using ToDoApp.Domain.Entities;
 using ToDoApp.infrastructure;
 
@@ -13,14 +14,32 @@ namespace ToDoApp.Controllers
 	// Server ----> Client: 200 OK
 	[ApiController]
 	[Route("[controller]")]
-	public class TodoController(IApplicationDbContext _dbContext) : ControllerBase
+	public class TodoController : ControllerBase
 	{
+		private readonly IApplicationDbContext _dbContext;
+		private readonly ITodoService _todoService;
+		private readonly IGuidGenerator _guidGenerator;
+		private readonly ISingletonGenerator _singletonGenerator;
+		private readonly GuidData _guidData;
+		public TodoController(
+			IApplicationDbContext dbContext,
+			ITodoService todoService,
+			IGuidGenerator guidGenerator,
+			ISingletonGenerator singletonGenerator,
+			GuidData guidData)
+		{
+			_dbContext = dbContext;
+			_todoService = todoService;
+			_guidGenerator = guidGenerator;
+			_singletonGenerator = singletonGenerator;
+			_guidData = guidData;
+		}
+
+
 		[HttpGet]
 		public IEnumerable<TodoViewModel> Get(bool isCompleted)
 		{
-			var data = _dbContext.ToDos
-				.Where(x => x.IsCompleted == isCompleted)
-				.Select(x => new TodoViewModel
+			var data = _dbContext.ToDos.Where(x => x.IsCompleted == isCompleted).Select(x => new TodoViewModel
 			{
 				Description = x.Description,
 				IsCompleted = x.IsCompleted
@@ -32,13 +51,7 @@ namespace ToDoApp.Controllers
 		[HttpPost]
 		public int Post(ToDoCreatedModel todo)
 		{
-			var data = new Todo
-			{
-				Description = todo.Description,
-			};
-			_dbContext.ToDos.Add(data);
-			_dbContext.SaveChanges();
-			return data.Id;
+			return _todoService.Post(todo);
 		}
 
 		[HttpPut]
@@ -55,6 +68,18 @@ namespace ToDoApp.Controllers
 			return todo.Id;
 		}
 
+		[HttpGet("guid")]
+		public Guid[] GetGuid()
+		{
+			_guidData.GuidGenerator = new GuidGenerator();
+			return
+			[
+				//_guidGenerator.Generate(), // transient
+				_singletonGenerator.Generate(), // singleton
+				// => không nên inject 1 tk có life time bé vào 1 tk có life time lớn vì thằng bé sẽ bị cuốn theo tk lớn
+				_guidData.GetGuid() // scoped
+			];
+		}
 		[HttpDelete]
 		public void Delete(int id)
 		{
