@@ -13,12 +13,12 @@ namespace ToDoApp.Controllers
 	// Server ----> Client: 200 OK
 	[ApiController]
 	[Route("[controller]")]
-	public class TodoController(IApplicationDbContext dbContext) : ControllerBase
+	public class TodoController(IApplicationDbContext _dbContext) : ControllerBase
 	{
 		[HttpGet]
 		public IEnumerable<TodoViewModel> Get(bool isCompleted)
 		{
-			var data = dbContext.ToDos
+			var data = _dbContext.ToDos
 				.Where(x => x.IsCompleted == isCompleted)
 				.Select(x => new TodoViewModel
 			{
@@ -30,38 +30,42 @@ namespace ToDoApp.Controllers
 		}
 
 		[HttpPost]
-		public int Post(ToDo todo)
+		public int Post(ToDoCreatedModel todo)
 		{
-			dbContext.ToDos.Add(todo);
-			dbContext.SaveChanges();
-			return todo.Id;
+			var data = new Todo
+			{
+				Description = todo.Description,
+			};
+			_dbContext.ToDos.Add(data);
+			_dbContext.SaveChanges();
+			return data.Id;
 		}
 
 		[HttpPut]
-		public int Put(ToDo todo)
+		public int Put(Todo todo)
 		{
-			var data = dbContext.ToDos.Find(todo.Id);
+			var data = _dbContext.ToDos.Find(todo.Id);
 			if (data == null)
 			{
 				return -1;
 			}
 			data.Description = todo.Description;
-			data.IsComplete = todo.IsComplete;
-			dbContext.SaveChanges();
+
+			_dbContext.SaveChanges();
 			return todo.Id;
 		}
 
 		[HttpDelete]
 		public void Delete(int id)
 		{
-			var data = dbContext.ToDos.Find(id);
+			var data = _dbContext.ToDos.Find(id);
 			if (data == null)
 			{
 				return;
 			}
 
-			dbContext.ToDos.Remove(data);
-			dbContext.SaveChanges();
+			_dbContext.ToDos.Remove(data);
+			_dbContext.SaveChanges();
 		}
 	}
 }

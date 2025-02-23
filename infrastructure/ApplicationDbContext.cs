@@ -5,7 +5,7 @@ namespace ToDoApp.infrastructure
 {
 	public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options), IApplicationDbContext
 	{
-		public DbSet<ToDo> ToDos { get; set; }
+		public DbSet<Todo> ToDos { get; set; }
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			optionsBuilder

@@ -6,7 +6,7 @@ namespace ToDoApp.infrastructure
 {
 	public interface IApplicationDbContext
 	{
-		DbSet<ToDo> ToDos { get; set; }
+		DbSet<Todo> ToDos { get; set; }
 		int SaveChanges();
 	}
 }
