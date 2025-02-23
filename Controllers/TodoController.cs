@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ToDoApp.Application.Dtos;
 using ToDoApp.Domain.Entities;
 using ToDoApp.infrastructure;
 
@@ -15,9 +16,17 @@ namespace ToDoApp.Controllers
 	public class TodoController(IApplicationDbContext dbContext) : ControllerBase
 	{
 		[HttpGet]
-		public IEnumerable<ToDo> Get(bool isCompleted)
+		public IEnumerable<TodoViewModel> Get(bool isCompleted)
 		{
-			return [.. dbContext.ToDos.Where(x => x.IsComplete == isCompleted)];
+			var data = dbContext.ToDos
+				.Where(x => x.IsCompleted == isCompleted)
+				.Select(x => new TodoViewModel
+			{
+				Description = x.Description,
+				IsCompleted = x.IsCompleted
+			}).ToList();
+
+			return data;
 		}
 
 		[HttpPost]
