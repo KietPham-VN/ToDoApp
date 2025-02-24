@@ -6,6 +6,9 @@ namespace ToDoApp.infrastructure
 	public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options), IApplicationDbContext
 	{
 		public DbSet<Todo> ToDos { get; set; }
+		public DbSet<Student> Student { get; set; }
+		public DbSet<School> School { get; set; }
+
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			optionsBuilder
