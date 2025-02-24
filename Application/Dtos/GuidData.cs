@@ -4,8 +4,9 @@ namespace ToDoApp.Application.Dtos
 {
 	public class GuidData
 	{
-		public IGuidGenerator GuidGenerator { get; set; }
-		public Guid GetGuid() {
+		public required IGuidGenerator GuidGenerator { get; set; }
+		public Guid GetGuid()
+		{
 			return GuidGenerator.Generate();
 		}
 	}

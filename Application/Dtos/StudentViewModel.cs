@@ -3,8 +3,8 @@
 	public class StudentViewModel
 	{
 		public int Id { get; set; }
-		public string FullName { get; set; }
+		public required string FullName { get; set; }
 		public int Age { get; set; }
-		public string SchoolName { get; set; }
+		public required string SchoolName { get; set; }
 	}
 }

@@ -20,6 +20,12 @@ namespace ToDoApp.Controllers
 		ISingletonGenerator singletonGenerator,
 		GuidData guidData) : ControllerBase
 	{
+		private readonly IApplicationDbContext dbContext = dbContext;
+		private readonly ITodoService todoService = todoService;
+		private readonly IGuidGenerator guidGenerator = guidGenerator;
+		private readonly ISingletonGenerator singletonGenerator = singletonGenerator;
+		private readonly GuidData guidData = guidData;
+
 		[HttpGet]
 		public IEnumerable<TodoViewModel> Get(bool isCompleted)
 		{

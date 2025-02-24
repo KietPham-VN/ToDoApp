@@ -1,4 +1,4 @@
-﻿  namespace ToDoApp.Application.Services
+﻿namespace ToDoApp.Application.Services
 {
 	public interface ISingletonGenerator
 	{
@@ -8,7 +8,8 @@
 	{
 		private readonly IGuidGenerator? _guidGenerator;
 
-		public Guid Generate() { 
+		public Guid Generate()
+		{
 			var guidGenerator = serviceProvider.GetService<IGuidGenerator>();
 			return guidGenerator!.Generate();
 		}

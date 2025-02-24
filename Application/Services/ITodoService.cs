@@ -8,7 +8,7 @@ namespace ToDoApp.Application.Services
 	public interface ITodoService
 	{
 		public int Post(ToDoCreatedModel todo);
-		public Guid Generate(); 
+		public Guid Generate();
 	}
 
 	public class TodoService(IApplicationDbContext context, IGuidGenerator guidGenerator) : ITodoService
@@ -23,7 +23,8 @@ namespace ToDoApp.Application.Services
 			context.SaveChanges();
 			return data.Id;
 		}
-		public Guid Generate() { 
+		public Guid Generate()
+		{
 			return guidGenerator.Generate();
 		}
 	}

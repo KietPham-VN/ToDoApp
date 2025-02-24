@@ -30,7 +30,7 @@ namespace ToDoApp.Application.Services
 				// Join School on Student.SchoolId = School.Id
 				// Where School.Id = SchoolId
 				students = students.Where(student => student.School.Id == SchoolId);
-					
+
 			}
 			// IQueryable là 1 interface kế thừa từ IEnumerable
 			// đại diện cho 1 tập hợp các phần tử có thể truy vấn

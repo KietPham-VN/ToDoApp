@@ -22,13 +22,12 @@ namespace ToDoApp.Domain.Entities
 		public DateTime DateOfBirth { get; set; }
 		// cái dấu chấm hỏi ở đây là nullable
 
-		public string Address1 { get; set; }
-		public string Address2 { get; set; }
+		public string? Address1 { get; set; }
 		[NotMapped]// không map với database
 		public int Age { get => (DateTime.Now - DateOfBirth).Days / 365; }
 
 		[ForeignKey("School")] // foreign key khóa ngoại nè
 		public int SId { get; set; } 
-		public School School { get; set; } 
+		public School? School { get; set; } 
 	}
 }
