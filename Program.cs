@@ -12,6 +12,7 @@ builder.Services.AddScoped<ITodoService, TodoService>();
 builder.Services.AddTransient<IGuidGenerator, GuidGenerator>();
 builder.Services.AddSingleton<ISingletonGenerator, SingletonGenerator>();
 builder.Services.AddTransient<GuidData>();
+builder.Services.AddScoped<IStudentService, StudentService>();
 // DI container, IServiceProvider
 
 var app = builder.Build();
