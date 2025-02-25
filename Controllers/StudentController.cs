@@ -13,5 +13,23 @@ namespace ToDoApp.Controllers
 		{
 			return studentService.GetStudents(SchoolId);
 		}
+
+		[HttpPost]
+		public bool CreateStudent(StudentCreateModel student)
+		{
+			return studentService.CreateStudent(student);
+		}
+
+		[HttpPut]
+		public bool UpdateStudent(StudentUpdateModel student)
+		{
+			return studentService.UpdateStudent(student);
+		}
+
+		[HttpDelete]
+		public bool DeleteStudent(int id)
+		{
+			return studentService.DeleteStudent(id);
+		}
 	}
 }

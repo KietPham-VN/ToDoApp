@@ -1,27 +1,26 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using ToDoApp.Application.Dtos;
+using ToDoApp.Domain.Entities;
 using ToDoApp.infrastructure;
 
 namespace ToDoApp.Application.Services
 {
 	public interface IStudentService
 	{
-		IEnumerable<StudentViewModel> GetStudents(int? SchooId);
+		IEnumerable<StudentViewModel> GetStudents(int? SchoolId);
+		bool CreateStudent(StudentCreateModel student);
+		bool UpdateStudent(StudentUpdateModel student);
+		bool DeleteStudent(int id);
 	}
-	public class StudentService : IStudentService
+	public class StudentService(IApplicationDbContext context) : IStudentService
 	{
-		private readonly IApplicationDbContext _context;
-
-		public StudentService(IApplicationDbContext context)
-		{
-			_context = context;
-		}
 		public IEnumerable<StudentViewModel> GetStudents(int? SchoolId)
 		{
 			// query : select * From Student 
 			// Join School on Student.SchoolId = School.Id
 
-			var students = _context.Student.Include(student => student.School)
+			var students = context.Student.Include(student => student.School)
 				.AsQueryable();
 
 			if (SchoolId.HasValue)
@@ -49,10 +48,68 @@ namespace ToDoApp.Application.Services
 			return [.. students.Select(student => new StudentViewModel
 			{
 				Id = student.Id,
-				FullName = student.FristName + " " + student.LastName,
+				FullName = student.FirstName + " " + student.LastName,
 				Age = student.Age,
 				SchoolName = student.School.Name
 			})];
+		}
+		public bool CreateStudent(StudentCreateModel student)
+		{
+			if (student == null)
+			{
+				return false;
+			}
+			var data = new Student
+			{
+				FirstName = student.FirstName,
+				LastName = student.LastName,
+				DateOfBirth = student.DateOfBirth,
+				Address = student.Address,
+				SchoolId = student.SchoolId
+			};
+			context.Student.Add(data);
+			context.SaveChanges();
+			return true;
+		}
+		public bool UpdateStudent(StudentUpdateModel student)
+		{
+			if (student == null)
+			{
+				return false;
+			}
+
+			var Student = context.Student.Find(student.Id);
+			if (Student == null)
+			{
+				return false;
+			}
+
+			Student.FirstName = student.FirstName;
+			Student.LastName = student.LastName;
+			Student.DateOfBirth = student.DateOfBirth;
+			Student.Address = student.Address;
+			Student.SchoolId = student.SchoolId;
+			context.SaveChanges();
+			return true;
+		}
+		public bool DeleteStudent(int id)
+		{
+			if (id <= 0)
+			{
+				return false;
+			}
+
+			var student = context.Student.Find(id);
+			if (student == null)
+			{
+				return false;
+			}
+
+
+			context.Student.Remove(student);
+			context.SaveChanges();
+			return true;
+
 		}
 	}
 }

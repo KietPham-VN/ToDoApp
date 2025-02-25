@@ -7,12 +7,12 @@ namespace ToDoApp.Domain.Entities
 	public class Student
 	{
 		[Key] // primary key
-		[DatabaseGenerated(DatabaseGeneratedOption.None)]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
 
 		[MaxLength(255)] // độ dài tối đa
 		[Column("Surname")]
-		public string? FristName { get; set; }
+		public string? FirstName { get; set; }
 
 		[StringLength(255)] // độ dài tối đa(chỉ dùng cho chuỗi)
 		public string? LastName { get; set; }
@@ -22,12 +22,12 @@ namespace ToDoApp.Domain.Entities
 		public DateTime DateOfBirth { get; set; }
 		// cái dấu chấm hỏi ở đây là nullable
 
-		public string? Address1 { get; set; }
+		public string? Address { get; set; }
 		[NotMapped]// không map với database
 		public int Age { get => (DateTime.Now - DateOfBirth).Days / 365; }
 
 		[ForeignKey("School")] // foreign key khóa ngoại nè
-		public int SId { get; set; } 
+		public int SchoolId { get; set; } 
 		public School? School { get; set; } 
 	}
 }
