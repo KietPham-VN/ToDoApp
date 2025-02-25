@@ -13,6 +13,7 @@ builder.Services.AddTransient<IGuidGenerator, GuidGenerator>();
 builder.Services.AddSingleton<ISingletonGenerator, SingletonGenerator>();
 builder.Services.AddTransient<GuidData>();
 builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddScoped<ISchoolService, SchoolService>();
 // DI container, IServiceProvider
 
 var app = builder.Build();
