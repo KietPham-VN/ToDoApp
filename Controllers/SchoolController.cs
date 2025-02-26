@@ -7,7 +7,7 @@ namespace ToDoApp.Controllers
 	[ApiController]
 	[Route("[controller]")]
 	public class SchoolController(ISchoolService schoolService) : ControllerBase
-    {
+	{
 		[HttpGet]
 		public IEnumerable<SchoolViewModel> GetSchools(int? SchoolId)
 		{

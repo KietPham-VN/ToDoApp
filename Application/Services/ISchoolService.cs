@@ -13,8 +13,6 @@ namespace ToDoApp.Application.Services
 
 	public class SchoolService(IApplicationDbContext context) : ISchoolService
 	{
-
-
 		public IEnumerable<SchoolViewModel> GetSchools(int? SchoolId)
 		{
 			var Schools = context.School.AsQueryable();
@@ -32,7 +30,7 @@ namespace ToDoApp.Application.Services
 		public bool CreateSchool(SchoolCreateModel schoolCreateModel)
 		{
 
-			if (schoolCreateModel == null || string.IsNullOrWhiteSpace(schoolCreateModel.Name))
+			if (string.IsNullOrWhiteSpace(schoolCreateModel.Name))
 			{
 				return false; 
 			}
@@ -50,7 +48,7 @@ namespace ToDoApp.Application.Services
 	
 		public bool UpdateSchool(SchoolUpdateModel schoolUpdateModel)
 		{
-			if (schoolUpdateModel == null || string.IsNullOrWhiteSpace(schoolUpdateModel.Name))
+			if (string.IsNullOrWhiteSpace(schoolUpdateModel.Name))
 			{
 				return false;
 			}

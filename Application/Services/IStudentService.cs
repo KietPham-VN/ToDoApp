@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using ToDoApp.Application.Dtos;
 using ToDoApp.Domain.Entities;
 using ToDoApp.infrastructure;
@@ -50,15 +49,11 @@ namespace ToDoApp.Application.Services
 				Id = student.Id,
 				FullName = student.FirstName + " " + student.LastName,
 				Age = student.Age,
-				SchoolName = student.School.Name
+				SchoolName = student.School!.Name!
 			})];
 		}
 		public bool CreateStudent(StudentCreateModel student)
 		{
-			if (student == null)
-			{
-				return false;
-			}
 			var data = new Student
 			{
 				FirstName = student.FirstName,
@@ -73,10 +68,7 @@ namespace ToDoApp.Application.Services
 		}
 		public bool UpdateStudent(StudentUpdateModel student)
 		{
-			if (student == null)
-			{
-				return false;
-			}
+
 
 			var Student = context.Student.Find(student.Id);
 			if (Student == null)
